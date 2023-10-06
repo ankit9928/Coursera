@@ -1,29 +1,28 @@
 import { TextField, Card, Typography, Button } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 
-function Signup() {
+function AddCourse() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
   const [imageLink, setImagelink] = useState("");
 
   async function handleaddcourse() {
-    const res = await fetch("http://localhost:3000/admin/courses", {
-      method: "POST",
-      body: JSON.stringify({
+    await axios.post(
+      "http://localhost:3000/admin/courses",
+      {
         title,
         description,
         price,
         imageLink,
-      }),
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    });
-
-    const data = await res.json();
-    console.log(data);
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
   }
 
   return (
@@ -89,4 +88,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default AddCourse;

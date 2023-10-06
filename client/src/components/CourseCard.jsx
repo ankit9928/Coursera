@@ -1,9 +1,14 @@
 /* eslint-disable react/prop-types */
 import { Card, Typography } from "@mui/material";
+// import { useRecoilValue } from "recoil";
+// import coursestate from "../../Store";
 
 function CourseCard(props) {
-  
-  const course = props.course;
+
+  // const courseId = props.courseId;
+
+   const course = props.course;
+
 
   return (
     <Card

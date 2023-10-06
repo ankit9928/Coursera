@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 import { Card, Typography, TextField, Button } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 
 function UpdateCard(props) {
-
+   
   const course = props.course;
 
   const [title, setTitle] = useState(course.title);
@@ -13,19 +14,21 @@ function UpdateCard(props) {
 
   async function handleUpdatecourse() {
     // eslint-disable-next-line no-unused-vars
-    const res = await fetch("http://localhost:3000/admin/courses/" + course._id, {
-      method: "PUT",
-      body: JSON.stringify({
+    const res = await axios.put(
+      "http://localhost:3000/admin/courses/" + course._id,
+      {
         title,
         description,
         price,
         imageLink,
-      }),
-      headers: {
-        "content-type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-    });
+      {
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
   }
 
   return (

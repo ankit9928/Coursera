@@ -1,25 +1,24 @@
 import { Button, Card, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
 
-  async function handleLogin() {
-    const res = await fetch("http://localhost:3000/admin/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email: email,
-        Password: Password,
-      }),
+  const  handleLogin = async () => {
+
+    const res = await axios.post("http://localhost:3000/admin/login",null, {
       headers: {
-        "content-type": "application/json",
+        username: email,
+        password: Password,
       },
     });
 
-    const data = await res.json();
+    const data = res.data;
+    console.log("assssss")
     localStorage.setItem("token", data.token);
-    window.location = '/';
+    window.location = "/";
   }
 
   return (
@@ -52,7 +51,7 @@ function Login() {
           <br />
           <div>
             <Button variant="contained" onClick={handleLogin}>
-              Signup
+              Login
             </Button>
           </div>
         </Card>

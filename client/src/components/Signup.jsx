@@ -1,24 +1,26 @@
 import { Button, Card, TextField, Typography } from "@mui/material";
 import { useState } from "react";
+import axios from "axios";
 
 function Signup() {
   const [username, setUsername] = useState("ankit ");
   const [password, setPassword] = useState("");
 
   async function handleSignup() {
-    const res = await fetch("http://localhost:3000/admin/signup", {
-      method: "POST",
-      body: JSON.stringify({
+    const res = await axios.post(
+      "http://localhost:3000/admin/signup",
+      {
         username: username,
         password: password,
-      }),
-      headers: {
-        "content-type": "application/json",
       },
-    });
+      {
+        headers: {
+          "content-type": "application/json",
+        },
+      }
+    );
 
-    const data = await res.json();
-    console.log("ankitmeena");
+    const data = res.data;
     localStorage.setItem("token", data.token);
     window.location = "/";
   }

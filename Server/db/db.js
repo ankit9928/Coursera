@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 
+// define the schema
+
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -19,6 +21,12 @@ const courseSchema = new mongoose.Schema({
   published: Boolean,
 });
 
-export const User = mongoose.model("User", userSchema);
-export const Admin = mongoose.model("Admin", adminSchema);
-export const Course = mongoose.model("Course", courseSchema);
+const User = mongoose.model("User", userSchema);
+const Admin = mongoose.model("Admin", adminSchema);
+const Course = mongoose.model("Course", courseSchema);
+
+module.exports = {
+  User,
+  Admin,
+  Course,
+};

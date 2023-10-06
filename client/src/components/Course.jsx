@@ -3,24 +3,30 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import UpdateCard from "./UpdateCard";
 import CourseCard from "./CourseCard";
+// import coursestate from "../../Store/recoil";
+// import { useSetRecoilState } from "recoil";
+import axios from "axios";
 
 function Course() {
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState([]); // we did state managment like this before now we use the recoil for SM in react
+
+  // const setcourses = useSetRecoilState(coursestate);
+
   const { courseId } = useParams();
 
   useEffect(() => {
     const fetchdata = async () => {
-      const res = await fetch("http://localhost:3000/admin/courses", {
+      const res = await axios.get("http://localhost:3000/admin/courses", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      const data = await res.json();
+      const data = res.data;
       setCourses(data.courses);
     };
     fetchdata();
-  }, []);
+  });
 
   let course = null;
   for (let i = 0; i < courses.length; i++) {
@@ -36,7 +42,7 @@ function Course() {
   return (
     <div style={{ display: "flex", marginTop: 100 }}>
       <div style={{ marginLeft: 200 }}>
-        <CourseCard course={course} />
+        <CourseCard courseId={courseId} course={course} />
       </div>
 
       <div style={{ paddingLeft: 200 }}>

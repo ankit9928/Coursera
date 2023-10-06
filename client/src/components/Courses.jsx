@@ -1,19 +1,20 @@
 /* eslint-disable react/prop-types */
 import { Card, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchdata = async () => {
-      const res = await fetch("http://localhost:3000/admin/courses", {
+      const res = await axios.get("http://localhost:3000/admin/courses", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
 
-      const data = await res.json();
+      const data = res.data;
       setCourses(data.courses);
     };
 
