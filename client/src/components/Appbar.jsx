@@ -29,7 +29,9 @@ function Appbar() {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h5">Coursera</Typography>
+        <Typography variant="h5" style={{ marginLeft: 10 }}>
+          Coursera
+        </Typography>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div style={{ marginRight: 20, marginTop: 10 }}>
             <Typography>{useremail}</Typography>
@@ -37,7 +39,7 @@ function Appbar() {
 
           <Button
             variant="contained"
-            style={{ marginRight: 20 }}
+            style={{ marginRight: 20, marginBottom: 10 }}
             onClick={() => {
               localStorage.removeItem("token");
               window.location = "/";

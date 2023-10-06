@@ -33,10 +33,10 @@ function UpdateCard(props) {
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      <div>
+      
         <Card
           variant="outlined"
-          style={{ padding: 20, marginTop: 50, width: 400 }}
+          style={{ padding: 20, marginTop: 200, width: 500 }}
         >
           <Typography style={{ textAlign: "center", fontWeight: "600" }}>
             Update Course
@@ -93,7 +93,7 @@ function UpdateCard(props) {
             Update Course
           </Button>
         </Card>
-      </div>
+      
     </div>
   );
 }

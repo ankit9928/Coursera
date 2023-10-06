@@ -6,11 +6,10 @@ import CourseCard from "./CourseCard";
 // import coursestate from "../../Store/recoil";
 // import { useSetRecoilState } from "recoil";
 import axios from "axios";
+import { Grid, Typography } from "@mui/material";
 
 function Course() {
-  const [courses, setCourses] = useState([]); // we did state managment like this before now we use the recoil for SM in react
-
-  // const setcourses = useSetRecoilState(coursestate);
+  const [courses, setCourses] = useState([]);
 
   const { courseId } = useParams();
 
@@ -40,17 +39,53 @@ function Course() {
   }
 
   return (
-    <div style={{ display: "flex", marginTop: 100 }}>
-      <div style={{ marginLeft: 200 }}>
-        <CourseCard courseId={courseId} course={course} />
-      </div>
-
-      <div style={{ paddingLeft: 200 }}>
-        {" "}
-        <UpdateCard course={course} />
-      </div>
+    <div>
+      <Topper title={course.title} />;
+      <Grid container>
+        <Grid item lg={8} md={12} sm={12}>
+          {" "}
+          <UpdateCard course={course} />
+        </Grid>
+        <Grid item lg={4} md={12} sm={12}>
+          <CourseCard courseId={courseId} course={course} />
+        </Grid>
+      </Grid>
     </div>
   );
+
+  function Topper({ title }) {
+    return (
+      <div
+        style={{
+          height: 250,
+          background: "#212121",
+          top: 0,
+          width: "100vw",
+          zIndex: 0,
+          marginBottom: -250,
+        }}
+      >
+        <div
+          style={{
+            height: 250,
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <div>
+            <Typography
+              style={{ color: "white", fontWeight: 600 }}
+              variant="h3"
+              textAlign={"center"}
+            >
+              {title}
+            </Typography>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 export default Course;

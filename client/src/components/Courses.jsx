@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import { Card, Typography } from "@mui/material";
+import { Button, Card, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -22,7 +23,9 @@ function Courses() {
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
+    <div
+      style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
+    >
       {courses.map((course) => {
         return <Course key={course.id} course={course} />;
       })}
@@ -31,6 +34,8 @@ function Courses() {
 }
 
 function Course(props) {
+  const navigate = useNavigate();
+
   return (
     <Card
       style={{
@@ -45,7 +50,22 @@ function Course(props) {
       <Typography textAlign={"center"} variant="subtitle1">
         {props.course.description}
       </Typography>
-      <img src={props.course.imageLink} style={{ width: 300 , height:300 }}></img>
+      <img
+        src={props.course.imageLink}
+        style={{ width: 300, height: 300 }}
+      ></img>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 20, marginBottom: 20 }}>
+        {" "}
+        <Button
+          variant="contained"
+          size="medium"
+          onClick={() => {
+            navigate(`/courses/${props.course._id}`);
+          }}
+        >
+          Edit
+        </Button>
+      </div>
     </Card>
   );
 }
