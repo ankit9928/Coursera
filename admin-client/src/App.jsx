@@ -10,7 +10,13 @@ import Course from "./components/Course";
 
 function App() {
   return (
-    <>
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        backgroundColor: "#eeeeee",
+      }}
+    >
       <RecoilRoot>
         <Router>
           <Appbar />
@@ -23,7 +29,7 @@ function App() {
           </Routes>
         </Router>
       </RecoilRoot>
-    </>
+    </div>
   );
 }
 

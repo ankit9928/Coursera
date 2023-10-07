@@ -7,18 +7,18 @@ function Appbar() {
   const navigate = useNavigate();
   const [useremail, setUseremail] = useState(null);
 
-  useEffect(() => {
-    const fetchme = async () => {
-      const res = await axios.get("http://localhost:3000/admin/me", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const data = res.data;
-      setUseremail(data.username);
-    };
+  const init = async () => {
+    const res = await axios.get("http://localhost:3000/admin/me", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const data = res.data;
+    setUseremail(data.username);
+  };
 
-    fetchme();
+  useEffect(() => {
+    init();
   }, []);
 
   if (useremail) {
@@ -32,14 +32,35 @@ function Appbar() {
         <Typography variant="h5" style={{ marginLeft: 10 }}>
           Coursera
         </Typography>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <div style={{ marginRight: 20, marginTop: 10 }}>
-            <Typography>{useremail}</Typography>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginRight: 10,
+          }}
+        >
+          <div style={{ marginRight: 10 }}>
+            <Button
+              onClick={() => {
+                navigate("/addcourse");
+              }}
+            >
+              Add course
+            </Button>
+          </div>
+
+          <div style={{ marginRight: 10 }}>
+            <Button
+              onClick={() => {
+                navigate("/courses");
+              }}
+            >
+              Courses
+            </Button>
           </div>
 
           <Button
-            variant="contained"
-            style={{ marginRight: 20, marginBottom: 10 }}
+            variant={"contained"}
             onClick={() => {
               localStorage.removeItem("token");
               window.location = "/";
