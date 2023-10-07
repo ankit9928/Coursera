@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import UpdateCard from "./UpdateCard";
 import CourseCard from "./CourseCard";
@@ -7,53 +7,67 @@ import CourseCard from "./CourseCard";
 // import { useSetRecoilState } from "recoil";
 import axios from "axios";
 import { Grid, Typography } from "@mui/material";
+import { courseState } from "../store/atoms/course";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isCourseLoading, courseTitle } from "../store/selectors/course";
 
 function Course() {
-  const [courses, setCourses] = useState([]);
-
+  const setCourse = useSetRecoilState(courseState);
+  const courseLoading = useRecoilValue(isCourseLoading);
   const { courseId } = useParams();
 
   useEffect(() => {
     const fetchdata = async () => {
-      const res = await axios.get("http://localhost:3000/admin/courses", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const res = await axios.get(
+        `http://localhost:3000/admin/course/${courseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       const data = res.data;
-      setCourses(data.courses);
+
+      if (data.course) {
+        setCourse({
+          isLoading: false,
+          course: data.course,
+        });
+      } else {
+        setCourse({
+          isLoading: false,
+          course: null,
+        });
+      }
     };
     fetchdata();
   });
 
-  let course = null;
-  for (let i = 0; i < courses.length; i++) {
-    if (courses[i]._id == courseId) {
-      course = courses[i];
-    }
-  }
-
-  if (!course) {
-    return <div>Loading.........</div>;
+  if (courseLoading) {
+    return <div>Loading......</div>;
   }
 
   return (
-    <div style={{marginTop:20}}>
-      <Topper title={course.title} />;
+    <div style={{ marginTop: 20 }}>
+
+      <Topper/>;
       <Grid container>
         <Grid item lg={8} md={12} sm={12}>
           {" "}
-          <UpdateCard course={course} />
+          <UpdateCard/>
         </Grid>
         <Grid item lg={4} md={12} sm={12}>
-          <CourseCard courseId={courseId} course={course} />
+          <CourseCard />
         </Grid>
       </Grid>
     </div>
   );
 
-  function Topper({ title }) {
+  function Topper() {
+
+    const title = useRecoilValue(courseTitle);
+
     return (
       <div
         style={{

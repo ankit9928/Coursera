@@ -1,14 +1,15 @@
-/* eslint-disable react/prop-types */
 import { Card, Typography } from "@mui/material";
-// import { useRecoilValue } from "recoil";
-// import coursestate from "../../Store";
+import {
+  courseImage,
+  courseTitle,
+  coursePrice,
+} from "../store/selectors/course";
+import { useRecoilValue } from "recoil";
 
-function CourseCard(props) {
+function CourseCard() {
+  const title = useRecoilValue(courseTitle);
 
-  // const courseId = props.courseId;
-
-   const course = props.course;
-
+  const imageLink = useRecoilValue(courseImage);
 
   return (
     <Card
@@ -18,14 +19,28 @@ function CourseCard(props) {
         minHeight: 200,
       }}
     >
-      <Typography textAlign={"center"} variant="h5">
-        {course.title}
-      </Typography>
-      <Typography textAlign={"center"} variant="subtitle1">
-        {course.description}
-      </Typography>
-      <img src={course.imageLink} style={{ width: 300, height: 300 }}></img>
+      <img src={imageLink} style={{ width: 300 }}></img>
+      <div style={{ marginLeft: 10 }}>
+        <Typography variant="h5"> {title} </Typography>
+        <Price />
+      </div>
     </Card>
+  );
+}
+
+function Price() {
+  const price = useRecoilValue(coursePrice);
+
+  return (
+    <div style={{ display: "flex" }}>
+      <Typography variant="subtitle3" style={{ color: "gray", marginTop: 5 }}>
+        Price
+      </Typography>
+      <Typography variant="subtitle1" style={{ marginLeft: 10 }}>
+        {" "}
+        <b>${price}</b>
+      </Typography>
+    </div>
   );
 }
 

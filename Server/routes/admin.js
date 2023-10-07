@@ -50,6 +50,7 @@ router.post("/courses", authenticatejwt, async (req, res) => {
   res.json({ message: "course created successfully", courseId: course.id });
 });
 
+// for updating the course
 router.put("/courses/:courseid", authenticatejwt, async (req, res) => {
   const course = await Course.findByIdAndUpdate(req.params.courseid, req.body);
 
@@ -65,12 +66,11 @@ router.get("/courses", authenticatejwt, async (req, res) => {
   res.json({ courses });
 });
 
-router.get("/course/:courseId" , authenticatejwt, async (req, res) => {
-  
-  const  courseId = req.params.courseId;
+// for getting the single course
+router.get("/course/:courseId", authenticatejwt, async (req, res) => {
+  const courseId = req.params.courseId;
   const course = await Course.findById(courseId);
-  res.json({course});
-
-})
+  res.json({ course });
+});
 
 module.exports = router;
