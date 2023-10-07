@@ -1,10 +1,13 @@
 import { Button, Card, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import axios from "axios";
+import { userState } from "../store/atoms/user";
+import { useSetRecoilState } from "recoil";
 
 function Signup() {
-  const [username, setUsername] = useState("ankit ");
+  const [username, setUsername] = useState("ankit");
   const [password, setPassword] = useState("");
+  const setUser = useSetRecoilState(userState);
 
   async function handleSignup() {
     const res = await axios.post(
@@ -22,7 +25,11 @@ function Signup() {
 
     const data = res.data;
     localStorage.setItem("token", data.token);
-    window.location = "/";
+    setUser({
+      isLoading: false,
+      userEmail: username,
+    });
+    navigator("/")
   }
 
   return (

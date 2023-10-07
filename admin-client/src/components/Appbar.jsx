@@ -1,25 +1,20 @@
 import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { userState } from "../store/atoms/user";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { userLoadingstate } from "../store/selectors/isuserLoaing";
+import { userEmailState } from "../store/selectors/userEmail";
 
 function Appbar() {
   const navigate = useNavigate();
-  const [useremail, setUseremail] = useState(null);
 
-  const init = async () => {
-    const res = await axios.get("http://localhost:3000/admin/me", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    const data = res.data;
-    setUseremail(data.username);
-  };
+  const setUser = useSetRecoilState(userState);
+  const isLoading = useRecoilValue(userLoadingstate);
+  const useremail = useRecoilValue(userEmailState);
 
-  useEffect(() => {
-    init();
-  }, []);
+  if (isLoading) {
+    return <div>Loading........</div>;
+  }
 
   if (useremail) {
     return (
@@ -29,9 +24,9 @@ function Appbar() {
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h5" style={{ marginLeft: 10 }}>
-          Coursera
-        </Typography>
+        <div style={{ marginLeft: 10, marginTop: 5 }}>
+          <Typography variant="h5">Coursera</Typography>
+        </div>
         <div
           style={{
             display: "flex",
@@ -39,7 +34,7 @@ function Appbar() {
             marginRight: 10,
           }}
         >
-          <div style={{ marginRight: 10 }}>
+          <div style={{ marginRight: 10, marginTop: 10 }}>
             <Button
               onClick={() => {
                 navigate("/addcourse");
@@ -49,7 +44,7 @@ function Appbar() {
             </Button>
           </div>
 
-          <div style={{ marginRight: 10 }}>
+          <div style={{ marginRight: 10, marginTop: 10 }}>
             <Button
               onClick={() => {
                 navigate("/courses");
@@ -59,15 +54,21 @@ function Appbar() {
             </Button>
           </div>
 
-          <Button
-            variant={"contained"}
-            onClick={() => {
-              localStorage.removeItem("token");
-              window.location = "/";
-            }}
-          >
-            Log Out
-          </Button>
+          <div style={{ marginRight: 10, marginTop: 10 }}>
+            <Button
+              variant={"contained"}
+              onClick={() => {
+                localStorage.removeItem("token");
+                setUser({
+                  userEmail: null,
+                  isLoading: false,
+                });
+                navigate("/");
+              }}
+            >
+              Log Out
+            </Button>
+          </div>
         </div>
       </div>
     );
@@ -80,25 +81,32 @@ function Appbar() {
         justifyContent: "space-between",
       }}
     >
-      <Typography variant="h5">Coursera</Typography>
-      <div>
-        <Button
-          variant="contained"
-          style={{ marginRight: 20 }}
-          onClick={() => {
-            navigate("/signup");
-          }}
-        >
-          Signup
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            navigate("/signin");
-          }}
-        >
-          Signin
-        </Button>
+      <div style={{ marginLeft: 10, marginTop: 5 }}>
+        <Typography variant="h5">Coursera</Typography>
+      </div>
+
+      <div style={{ display: "flex", marginRight: 20 }}>
+        <div style={{ marginRight: 10, marginTop: 10 }}>
+          <Button
+            variant="contained"
+            style={{ marginRight: 20 }}
+            onClick={() => {
+              navigate("/signup");
+            }}
+          >
+            Signup
+          </Button>
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              navigate("/signin");
+            }}
+          >
+            Signin
+          </Button>
+        </div>
       </div>
     </div>
   );

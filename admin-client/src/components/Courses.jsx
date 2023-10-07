@@ -54,7 +54,14 @@ function Course(props) {
         src={props.course.imageLink}
         style={{ width: 300, height: 300 }}
       ></img>
-      <div style={{ display: "flex", justifyContent: "center", marginTop: 20, marginBottom: 20 }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: 20,
+          marginBottom: 20,
+        }}
+      >
         {" "}
         <Button
           variant="contained"

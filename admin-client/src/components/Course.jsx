@@ -39,7 +39,7 @@ function Course() {
   }
 
   return (
-    <div>
+    <div style={{marginTop:20}}>
       <Topper title={course.title} />;
       <Grid container>
         <Grid item lg={8} md={12} sm={12}>
