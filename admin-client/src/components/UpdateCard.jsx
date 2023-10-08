@@ -53,7 +53,7 @@ function UpdateCard() {
 
   async function handleDeleteCourse() {
     await axios.delete(
-      "http://localhost:3000/admin/coursekk/" + courseDetails.course._id,
+      "http://localhost:3000/admin/course/" + courseDetails.course._id,
       {
         headers: {
           "content-type": "application/json",
