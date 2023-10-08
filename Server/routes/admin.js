@@ -79,7 +79,7 @@ router.get("/course/:courseId", authenticatejwt, async (req, res) => {
 
 // i need to do the put here insted of the delete because the this enpoint was working with the postman
 // but when i was doing it from the frontend using the axios the token was not working
-router.delete("/coursekk/:courseId", authenticatejwt, async (req, res) => {
+router.delete("/course/:courseId", authenticatejwt, async (req, res) => {
   const courseId = req.params.courseId;
   await Course.deleteOne({ _id: courseId });
   res.status(200).json({ message: "course deleted" });
