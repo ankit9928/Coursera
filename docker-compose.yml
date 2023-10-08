@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  admin-client:
+    build: ./admin-client
+    ports:
+      - 3000:5173
+  api:
+    build: ./Server
+    ports:
+      - 3001:3000
+  db:
+    images: mongo:4.0-xenial
+    ports:
+      -
