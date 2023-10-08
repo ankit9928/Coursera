@@ -4,14 +4,17 @@ import { useState } from "react";
 import axios from "axios";
 import { courseState } from "../store/atoms/course";
 import { useRecoilState } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 function UpdateCard() {
+  const navigate = useNavigate();
+
   const [courseDetails, setCourse] = useRecoilState(courseState);
 
- 
-
   const [title, setTitle] = useState(courseDetails.course.title);
-  const [description, setDescription] = useState(courseDetails.course.description);
+  const [description, setDescription] = useState(
+    courseDetails.course.description
+  );
   const [price, setPrice] = useState(courseDetails.course.price);
   const [imageLink, setImagelink] = useState(courseDetails.course.imageLink);
 
@@ -46,6 +49,20 @@ function UpdateCard() {
       course: updatedcourse,
       isLoading: false,
     });
+  }
+
+  async function handleDeleteCourse() {
+    await axios.delete(
+      "http://localhost:3000/admin/coursekk/" + courseDetails.course._id,
+      {
+        headers: {
+          "content-type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    navigate("/courses");
   }
 
   return (
@@ -105,16 +122,12 @@ function UpdateCard() {
           ></TextField>
         </div>
         <br />
-        <div style={{display:"flex", justifyContent:"space-between"}}>
-        <Button variant="contained" onClick={handleUpdatecourse}>
-          Update Course
-        </Button>
-        <Button  onClick={handleUpdatecourse}> 
-        
-          Delete mmmmm
-        </Button>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Button variant="contained" onClick={handleUpdatecourse}>
+            Update Course
+          </Button>
+          <Button onClick={handleDeleteCourse}>Delete</Button>
         </div>
-        
       </Card>
     </div>
   );
