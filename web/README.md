@@ -29,9 +29,7 @@ Welcome to the Course Selling Website, a full-stack web application for managing
 
 
 2. Install the dependencies:
-   npm install
-# or
-yarn install
+   npm install  # or yarn install
 
 3. Configure Environment Variables
 
