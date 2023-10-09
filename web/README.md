@@ -26,3 +26,58 @@ Welcome to the Course Selling Website, a full-stack web application for managing
    ```bash
    git clone https://github.com/yourusername/course-selling-website.git
    cd course-selling-website
+
+
+2. Install the dependencies:
+   npm install
+# or
+yarn install
+
+3. Configure Environment Variables
+
+Create a .env file in the root directory and add the following environment variables:
+
+PORT=3000
+MONGODB_URI=your_mongodb_connection_uri
+JWT_SECRET=your_jwt_secret_key
+
+
+Features
+Authentication: User authentication using JWT. Only administrators can access certain features.
+Admin Dashboard: An admin dashboard for managing courses.
+Course Management: Create, read, update, and delete courses.
+Responsive Design: The website is designed to be responsive and work well on various screen sizes.
+State Management: Utilizes Recoil for state management.
+
+
+4. Start the server:
+    npm run server
+    # or
+    yarn run server
+
+ 5.  Start the frontend:
+
+     npm start
+    # or
+    yarn start
+
+6. Open your browser and access the application at http://localhost:3000.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
