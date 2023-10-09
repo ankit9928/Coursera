@@ -1,16 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-const SECRET = "at0EGCexKmMTkE92LSFYc8faed8TyATq";
-
-interface user {
-  username?: string;
-  password?: string;
-}
-
-export const generatejwt = (user: user) => {
-  const paylode = { username: user.username };
-  return jwt.sign(paylode, SECRET, { expiresIn: "1h" });
-};
+export const SECRET = "at0EGCexKmMTkE92LSFYc8faed8TyATq";
 
 export const authenticatejwt = (
   req: Request,
@@ -22,12 +12,20 @@ export const authenticatejwt = (
   if (authheader) {
     const token = authheader.split(" ")[1];
 
-    jwt.verify(token, SECRET, (err, user) => {
+    jwt.verify(token, SECRET, (err, paylode) => {
       if (err) {
         return res.sendStatus(403);
       } else {
-        req.user = user; // we here know that we have passed paylode of{usernmae: }
-        // when we generaetd the token
+        if (!paylode) {
+          return res.status(403);
+        }
+
+        if (typeof paylode === "string") {
+          return res.sendStatus(403);
+        }
+
+        req.headers["userId"] = paylode.id;
+
         next();
       }
     });

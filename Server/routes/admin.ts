@@ -1,13 +1,16 @@
-import  express  from "express";
+import express from "express";
+import jwt from "jsonwebtoken";
+import { SECRET } from "../middleware/auth";
+
 const app = express();
 
-import  { Admin, Course }  from "../db/db";
-import  { authenticatejwt, generatejwt } from "../middleware/auth";
+import { Admin, Course } from "../db/db";
+import { authenticatejwt } from "../middleware/auth";
 
 const router = express.Router();
 
 router.get("/me", authenticatejwt, async (req, res) => {
-  const admin = await Admin.findOne({ username: req.user.username });
+  const admin = await Admin.findById(req.headers.userId);
   if (!admin) {
     res.status(403).json({ msg: "Admin doesnt exist" });
     return;
@@ -26,7 +29,7 @@ router.post("/signup", async (req, res) => {
   } else {
     const newAdmin = new Admin({ username, password });
     await newAdmin.save();
-    const token = generatejwt(newAdmin);
+    const token = jwt.sign({ id: newAdmin._id }, SECRET, { expiresIn: "1h" });
     res.json({ message: "Admin creates succesfully", token });
   }
 });
@@ -36,7 +39,9 @@ router.post("/login", async (req, res) => {
   const admin = await Admin.findOne({ username, password });
 
   if (admin) {
-    const token = generatejwt(admin);
+    const token = jwt.sign({ id: admin._id }, SECRET, { expiresIn: "1h" });
+
+    // const token = generatejwt(admin);
     res.json({ message: "loged in succes", token });
   } else {
     res.status(403).json({ message: "Invalid username or password" });

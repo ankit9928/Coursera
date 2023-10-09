@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const app = (0, express_1.default)();
 const db_1 = require("../db/db");
 const auth_1 = require("../middleware/auth");
@@ -26,7 +27,7 @@ router.post("/signup", (req, res) => __awaiter(void 0, void 0, void 0, function*
     else {
         const newuser = new db_1.User({ username, password });
         yield newuser.save();
-        const token = (0, auth_1.generatejwt)(newuser);
+        const token = jsonwebtoken_1.default.sign({ id: newuser._id }, auth_1.SECRET, { expiresIn: "1h" });
         res.json({ message: "user created succesfully", token });
     }
 }));
@@ -34,7 +35,7 @@ router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* 
     const { username, password } = req.headers;
     const user = yield db_1.User.findOne({ username, password });
     if (user) {
-        token = (0, auth_1.generatejwt)(user);
+        const token = jsonwebtoken_1.default.sign({ id: user._id }, auth_1.SECRET, { expiresIn: "1h" });
         res.json({ message: "loged in succesfully", token });
     }
     else {
@@ -49,9 +50,9 @@ router.get("/courses", auth_1.authenticatejwt, (req, res) => __awaiter(void 0, v
 router.post("/courses/:courseid", auth_1.authenticatejwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const course = yield db_1.Course.findById(req.params.courseid);
     if (course) {
-        const user = yield db_1.User.findOne({ username: req.user.username });
+        const user = yield db_1.User.findById(req.headers.userId);
         if (user) {
-            user.purchasedCourses.push(course); // even though we pushed the hole big course here but only the id of course is stored there
+            user.purchasedCourses.push(course._id); // even though we pushed the hole big course here but only the id of course is stored there
             yield user.save();
             res.json({ message: "course purchased succesfully" });
         }
@@ -64,7 +65,7 @@ router.post("/courses/:courseid", auth_1.authenticatejwt, (req, res) => __awaite
     }
 }));
 router.get("/purchasedcourses", auth_1.authenticatejwt, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield db_1.User.findOne({ username: req.user.username }).populate("purchasedCourses");
+    const user = yield db_1.User.findById(req.headers.userId).populate("purchasedCourses");
     if (user) {
         res.json({ purchasedCourses: user.purchasedCourses || [] });
     }

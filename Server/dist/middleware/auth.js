@@ -3,25 +3,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.authenticatejwt = exports.generatejwt = void 0;
+exports.authenticatejwt = exports.SECRET = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const SECRET = "at0EGCexKmMTkE92LSFYc8faed8TyATq";
-const generatejwt = (user) => {
-    const paylode = { username: user.username };
-    return jsonwebtoken_1.default.sign(paylode, SECRET, { expiresIn: "1h" });
-};
-exports.generatejwt = generatejwt;
+exports.SECRET = "at0EGCexKmMTkE92LSFYc8faed8TyATq";
 const authenticatejwt = (req, res, next) => {
     const authheader = req.headers.authorization;
     if (authheader) {
         const token = authheader.split(" ")[1];
-        jsonwebtoken_1.default.verify(token, SECRET, (err, user) => {
+        jsonwebtoken_1.default.verify(token, exports.SECRET, (err, paylode) => {
             if (err) {
                 return res.sendStatus(403);
             }
             else {
-                req.user = user; // we here know that we have passed paylode of{usernmae: }
-                // when we generaetd the token
+                if (!paylode) {
+                    return res.status(403);
+                }
+                if (typeof paylode === "string") {
+                    return res.sendStatus(403);
+                }
+                req.headers["userId"] = paylode.id;
                 next();
             }
         });
