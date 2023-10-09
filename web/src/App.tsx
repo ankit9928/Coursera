@@ -11,6 +11,7 @@ import Login from "./components/Login";
 import AddCourse from "./components/AddCourses";
 import Courses from "./components/Courses";
 import Course from "./components/Course";
+import Landing from "./components/Landing";
 // import {userEmailState} from "./store/selectors/userEmail"
 import { userState } from "./store/atoms/user";
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/signin" element={<Login />} />
             <Route path="/addcourse" element={<AddCourse />} />
+            <Route path="/" element={<Landing/>} />
           </Routes>
         </Router>
       </RecoilRoot>
